@@ -1,5 +1,7 @@
+"use client";
 import { faMugHot } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { signIn } from "next-auth/react";
 import Link from "next/link";
 import React from "react";
 
@@ -16,7 +18,10 @@ const Header = () => {
           <Link href="/about">FAQ</Link>
           <Link href="/contact">Contact</Link>
           <div className="flex gap-2">
-            <button className="border-2 rounded-full px-4 py-2 ml-4">
+            <button
+              className="border-2 rounded-full px-4 py-2 ml-4"
+              onClick={() => signIn("google")}
+            >
               Login
             </button>
             <button className="bg-yellow-300 rounded-full px-4 py-2">
