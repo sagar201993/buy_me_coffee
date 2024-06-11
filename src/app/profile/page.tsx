@@ -9,17 +9,27 @@ const ProfilePage = () => {
         <div className="">cover image</div>
       </div>
 
-      <div>cover image</div>
       <div>
-        <input type="text" placeholder="username" />
+        <label className="mt-4" htmlFor="usernameIn">
+          username
+        </label>
+        <input id="usernameIn" type="text" placeholder="username" />
       </div>
       <div>
-        <input type="text" placeholder="display name" />
+        <label className="mt-4" htmlFor="displayNameIn">
+          displayname
+        </label>
+        <input id="displayNameIn" type="text" placeholder="display name" />
         <div>
-          <textarea name="" placeholder="bio"></textarea>
+          <label className="mt-4" htmlFor="bioIn">
+            bio
+          </label>
+          <textarea id="bioIn" name="" placeholder="bio"></textarea>
         </div>
         <div>
-          <button>save changes</button>
+          <button className="bg-yellow-300 px-4 py-2 rounded-lg mt-4 ">
+            save changes
+          </button>
         </div>
         <div>donatuon list</div>
       </div>
