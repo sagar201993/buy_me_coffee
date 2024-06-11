@@ -10,6 +10,7 @@ import React from "react";
 const Header = ({ session }: { session: Session | null }) => {
   const name = session?.user?.name || "";
   const firstname = name.split(" ")[0];
+
   return (
     <header className="mb-8">
       <div className="flex justify-between  max-w-2xl mx-auto px-4 py-4">
@@ -24,7 +25,10 @@ const Header = ({ session }: { session: Session | null }) => {
           <div className="flex gap-2">
             {session && (
               <div className="">
-                <button className="flex items-center gap-2 bg-yellow-300 rounded-full p-1 pr-4">
+                <Link
+                  href={"/profile"}
+                  className="flex items-center gap-2 bg-yellow-300 rounded-full p-1 pr-4"
+                >
                   <Image
                     src={session.user?.image as string}
                     alt="avatar"
@@ -33,7 +37,7 @@ const Header = ({ session }: { session: Session | null }) => {
                     className="rounded-full"
                   />
                   {firstname}
-                </button>
+                </Link>
               </div>
             )}
           </div>
