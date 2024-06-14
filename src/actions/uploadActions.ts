@@ -1,17 +1,14 @@
 "use server";
-
-import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import { v2 as cloudinary } from "cloudinary";
 import uniqid from "uniqid";
 
-export async function uploadToS3(formData: FormData) {
+export async function uploadToCloudinary(formData: FormData) {
   const file = formData.get("file") as File;
 
-  const s3Client = new S3Client({
-    region: "us-east-1",
-    credentials: {
-      accessKeyId: process.env.AWS_ACCESS_KEY as string,
-      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY as string,
-    },
+  cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME as string,
+    api_key: process.env.CLOUDINARY_API_KEY as string,
+    api_secret: process.env.CLOUDINARY_API_SECRET as string,
   });
 
   const ext = file.name.split(".").slice(-1)[0];
@@ -24,20 +21,18 @@ export async function uploadToS3(formData: FormData) {
   }
   const buffer = Buffer.concat(chunks);
 
-  const bucket = process.env.AWS_BUCKET as string;
-  await s3Client.send(
-    new PutObjectCommand({
-      Bucket: bucket,
-      Key: newFilename,
-      ACL: "public-read",
-      Body: buffer,
-      ContentType: file.type,
-    })
-  );
+  // Convert the buffer to a base64 string
+  const base64String = buffer.toString("base64");
+  const base64File = `data:${file.type};base64,${base64String}`;
+
+  const response = await cloudinary.uploader.upload(base64File, {
+    public_id: newFilename,
+    resource_type: "auto",
+  });
 
   return {
-    newFilename,
+    newFilename: response.public_id,
     ext,
-    url: `https://${bucket}.s3.amazonaws.com/${newFilename}`,
+    url: response.secure_url,
   };
 }
